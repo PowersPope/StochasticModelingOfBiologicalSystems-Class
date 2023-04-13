@@ -1,0 +1,112 @@
+% This is a very basic LaTeX template for homework solutions in modeling courses.
+% It demonstrates how to write math equations (inline and in separate lines), how to display a simple figure, how to create multiple sections, and how to add numberings to equations that you can then refer to in the text.
+% Use and modify at your own risk.
+
+% specify the general document type
+% this should always come first
+\documentclass[letter,12pt]{article}
+
+% load packages for more math symbols
+\usepackage{amsmath, amsthm, amsfonts, amscd, amsxtra, mathrsfs, amssymb, latexsym, stmaryrd, cancel, mathdots, wasysym}
+
+% allow importing graphics
+\usepackage{graphicx}
+
+% specify input language and font encoding
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% improve the way links appear
+\usepackage[bookmarks,bookmarksnumbered,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue]{hyperref}
+
+% modify document margins
+\usepackage{anysize}
+\marginsize{2.5cm}{2.5cm}{1cm}{2cm}
+
+% more sophisticated lists
+\usepackage{enumerate}
+
+
+% - - - - - - - - - - - - - TITLE PAGE - - - - - - - - - - - - %
+
+% title
+\title{\emph{Stochastic dynamical modeling in biology}\\\vspace{1em}- Notes Week 2 -}
+
+% author
+\author{Andrew Powers}
+
+% disable date display
+\date{}
+
+\begin{document}
+
+\maketitle % generate document title
+\hrule % draw a horizontal line
+
+
+% - - - - - - - - - - - - - START DOCUMENT - - - - - - - - - - - - %
+
+\section*{Notes 04-11-23}
+\subsection{Power Spectral Density}
+Talking about power spectral density (PSD).
+
+\begin{enumerate}[1.]
+  \item Important information to remember:
+  \begin{itemize}
+    \item Lower bound of our time: $\frac{1}{M\tau}$ 
+    \item Upper bound of our time: $\frac{1}{2\tau}$
+  \end{itemize}
+  \item When we havd some sort of periodicity. We see it in the autocovariance function and within the PSD.
+  \item Real numbers have no phase. Complex numbers have a non-zero phase.
+  \item A phase that is at zero, when comparing two other components, the two elements oscillate in synchrony.
+    However, if they were not at zero then they would possibly oscilliate not together. Ex. Preditor and Prey.
+  \item When applying a lot of normalization types like (Welch, Bartlett) method may produce a lot of noise within the 
+    phase. However, if we can reproduce at the point of the peak in the modulus, and the phase are the same. Then this
+    is a possible true synchrony we see.
+\end{enumerate}
+
+Questions
+\begin
+
+\subsection{Stochastic dynamical models}
+\begin{enumerate}[1.]
+  \item It won't tell us exactly what is going to happen. However, it will give us some idea about what will happen. i.e.,
+    it will tell us what the expected or probability of something happening will be. 
+
+  \item Stochastic Iterative Map
+    \begin{equation}
+      X_k \sim g(K, X_{k-1}, X_{k-2},...,X_{k-P})
+    \end{equation}
+    The random state of the system at time point k.
+    \begin{itemize}
+     \item If $X_k\in\mathbb{R}^n$ we call the SIM "numverical $n$-dimensional"
+     \item If $P>1$ we call the SIM delayed and p is the order of the SIM
+     \item If $P=1$ (immediately depends on the proceeding one) the SIM is called Markov
+     \item If $g$ does not explicitly depend on $k$,the SIM is called autonomous or time-homogeneious (no external factors change the dependency of the $k$)
+     \item Autonomous Markov SIM with a discrete state space are also known as discrete-time Markov chains
+    \end{itemize}
+
+    
+    Example: 
+    \begin{itemize}
+      \item $N_k = rN_{k-1}$ Deterministic Model (Geometric growth)
+      \item $N_k \sim \Pi(rN_{k-1})$ Stochastic Model -> Autonomous and markovian
+    \end{itemize}
+
+    Capital Pi ($\Pi$) to denote the poisson distribution. Only free parameter is the mean.
+
+    New Example:
+    \begin{itemize}
+      \item If we suppose that r depends on time. We now have multiple r's. 
+      \item $N_k \sim \Pi(r_kN_{k-1})\rightarrow$ Still Markovian. 
+      \item However, it is no longer Autonomous as we have anther time related factor/outside factor that influences the growth.
+    \end{itemize}
+
+
+  
+  
+\end{enumerate}
+
+
+\end{document}

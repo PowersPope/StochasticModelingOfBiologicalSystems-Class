@@ -1,0 +1,200 @@
+% This is a very basic LaTeX template for homework solutions in modeling courses.
+% It demonstrates how to write math equations (inline and in separate lines), how to display a simple figure, how to create multiple sections, and how to add numberings to equations that you can then refer to in the text.
+% Use and modify at your own risk.
+
+% specify the general document type
+% this should always come first
+\documentclass[letter,12pt]{article}
+
+% load packages for more math symbols
+\usepackage{amsmath, amsthm, amsfonts, amscd, amsxtra, mathrsfs, amssymb, latexsym, stmaryrd, cancel, mathdots, wasysym}
+
+% allow importing graphics
+\usepackage{graphicx}
+
+% specify input language and font encoding
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% improve the way links appear
+\usepackage[bookmarks,bookmarksnumbered,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue]{hyperref}
+
+% modify document margins
+\usepackage{anysize}
+\marginsize{2.5cm}{2.5cm}{1cm}{2cm}
+
+% more sophisticated lists
+\usepackage{enumerate}
+
+\usepackage{eucal}
+
+% - - - - - - - - - - - - - TITLE PAGE - - - - - - - - - - - - %
+
+% title
+\title{\emph{Stochastic dynamical modeling in biology}\\\vspace{1em}- Homework 1 solutions -}
+
+% author
+\author{Andrew Powers}
+
+% disable date display
+\date{}
+
+\begin{document}
+
+\maketitle % generate document title
+\hrule % draw a horizontal line
+
+
+% - - - - - - - - - - - - - START DOCUMENT - - - - - - - - - - - - %
+
+
+% Write out the first exercise
+\section*{Exercise 1}
+% Description to open the problem
+For any numerical $n$-dimensional DTSP with autocovariance function $\mathbb{K}$ we can show that if
+$ k,m\in\mathbb{N}_0$ then $\mathbb{K}(k,m) =\mathbb{K}(m,k)^T $. We can prove this equivalence by:
+
+% Enumeration of the problem and subsequent equations
+\begin{enumerate}[1.]
+\item Defining our equations ...
+\begin{equation}\label{eqn:EQ_COV_1}
+	\mathbb{K}(k,m) := Cov(X_k,X_m) := \mathbb{E}\{(X_k - \mathbb{E}X_k)(X_m - \mathbb{E}X_m)^T\}
+\end{equation}
+and
+\begin{equation}\label{eqn:EQ_COV_2}
+	\mathbb{K}(m,k)^T := Cov(X_m,X_k)^T := \mathbb{E}\{(X_m - \mathbb{E}X_m)(X_k - \mathbb{E}X_k)^T\}^T
+\end{equation}
+\item Write out their matrices ...
+\begin{equation}\label{eqn:MAT_EQ_1}
+	\mathbb{K}(k,m) = 
+	\begin{bmatrix}
+		Cov(X^{1}_k,X^{1}_m) & \cdots & Cov(X^{1}_k,X^{n}_m) \\
+		\vdots & \ddots & \vdots \\
+		Cov(X^{n}_k,X^{1}_m) & \cdots & Cov(X^{n}_k,X^{n}_m)
+	\end{bmatrix}
+\end{equation}
+and
+\begin{equation}\label{MAT_EQ_2}
+	\mathbb{K}(m,k)^T = 
+	\begin{bmatrix}
+		Cov(X^{1}_m,X^{1}_k) & \cdots & Cov(X^{n}_m,X^{1}_k) \\
+		\vdots & \ddots & \vdots \\
+		Cov(X^{1}_m,X^{n}_k) & \cdots & Cov(X^{n}_m,X^{n}_k)
+	\end{bmatrix}
+\end{equation}
+\item Now that we have defined our functions and their subsequent matrices we can see that they are
+equivalent to each other i.e. ...
+\begin{equation}
+	\mathbb{K}(k,m) = \mathbb{K}(m,k)^T
+\end{equation}
+\end{enumerate}
+
+
+\section*{Exercise 2}
+We have some $n$-dimensional covariance-stationary DTSP $(X_k)_{k\in\mathbb{Z}}$ with autocovariance
+function $\mathbb{K}$, and we let $\mu:=\mathbb{E}\{X_0\}$ be the mean of the process. In stationary DTSP
+we have some time lag that is defined $l:= k-m$. We want to show that ...
+% First Equation Definition
+\begin{equation}\label{need_to_prove}
+	(X_k)_{k\in\mathbb{Z}} = (X_k - \mu)_{k\in\mathbb{Z}}
+\end{equation}
+We can do that as follows \dots
+\begin{enumerate}[1.]
+	\item Define the covariance-stationary function \dots
+	\begin{equation}\label{eqn:DEF_STAT_1}
+		\mathbb{K}(l) := Cov(X_k,X_{k-l}) := \mathbb{E}\{(X_k-\mathbb{E}X_k)(X_{k-l}-\mathbb{E}X_{k-l})^T\}
+	\end{equation}
+	\item Given by the definition of a covariance-stationary function we have some time lag $l$, the matrix $\mathbb{K}(l)$, specifically the right portion of 
+	of each factor in equation (\ref{eqn:DEF_STAT_1}) is not dependent on $k$. This means that for any covariance-stationary DTSP the $\mu$ is the same at any offset $l$,
+	which means that we can replace the $\mathbb{E}\{X_{0}\}$ variable with $\mu$. Since the value is constant \dots
+	\begin{equation}
+		\mathbb{K}(l):= \mathbb{E}\{(X_k - \mu)(X_{k-l} - \mu)^T\}
+	\end{equation}
+	\item This shows by definition that (\ref{need_to_prove}) is equivalent.
+\end{enumerate}
+
+% Question 3
+\section*{Exercise 3}
+We analyzed electroencephelogram (EEG) results. The samples were taken from a patient's
+scalp over a timeframe of ~2.5 minutes. We are interested in the results for neurons F5, C1, and C3.
+However, we are interested in the last $80\%$ of the data for these three samples.
+
+\begin{enumerate}
+	% First Step and Graph
+	\item First we slice the data and drop the first 20\% of time series data. After slicing the data it is useful to visualize it by graphing. 
+		We need to make sure to transform the Time portion of the data so that it is in seconds and then we can view a Hertz vs Time graph \dots
+	\begin{figure}[ht]
+		\includegraphics*[width=\linewidth, height=5.5cm]{~/Downloads/image1_homework1_hertzvstime.png}	
+		\caption[First Graph]{Hertz Vs. Time}
+	\end{figure}
+	% Second Step and Graph
+	\item We can see that there are strong trends within C1 and C3. We should detrend those samples, so we 
+	can have a completely unbiased sample. This detrending will convert the samples to stationary. Making our math and 
+	analysis easier. We can put this now detrended data into the autocovariance-stationary function \dots
+	\begin{figure}[ht]
+		\includegraphics*[width=\linewidth, height=5.5cm]{~/Downloads/Image2_homework1_detrend_covariance.png}
+		\caption[Second Graph]{Hertz Vs. Time Detrended}
+	\end{figure}
+	\newpage
+	\item Now that our data has no strong trends and is stationary we can put our data through the autocovariance-stationary function.
+	Then we can graph the covariance of a sample $j$ and it's effects on sample $i$ at some time lag $l := k-m$.
+	Which is written out \dots
+	\begin{equation}
+		\mathbb{K}(l) := Cov(X_{k},X_{k-l}) := \mathbb{E}\{(X_k - \mathbb{E}X_k)(X_{k-l}-\mathbb{E}X_{k-l})\}
+	\end{equation}
+	% Detrend graph
+	\begin{figure}[ht]
+		\includegraphics*[width=\linewidth]{~/Downloads/second_last.png}
+		\caption[Third Graph]{Autocovariance of $X_{k_{(i,j)}}$}
+		\label{fig:detrend_covariance_graph}
+	\end{figure}
+	We can see the autocovariance-stationary function in action looking at the graph below (Fig.\ref{fig:detrend_covariance_graph}).
+	The x-axis has been constrained from a range of [0, 60] seconds.
+	\item Finally we can look at the autocorrelation function and check to see if any of the samples $X_k$ are 
+	correlated with each other. We can do this by taking the autocovariance function and dividing by some normalization
+	factors. These normlization factors are when the autocovariance function has a time lag equal to 0 \dots
+	\begin{equation}
+		\mathbb{K}^o := \frac{\mathbb{K}_{i,j}(k,m)}{\sqrt[]{\mathbb{K}_{i,i}(k,k)\mathbb{K}_{j,j}(m,m)}}
+	\end{equation}
+	This normalization allows us to view a correlation between the element $i$ and $j$. The values range from [-1,1].
+	\begin{figure}[ht]
+		\includegraphics*[width=\linewidth]{~/Downloads/final_fig.png}
+		\caption[short]{Autocorrelation of $X_{k_{(i,j)}}$}
+		\label{fig:detrend_correlation_graph}
+	\end{figure}
+	Looking below (Fig.\ref{fig:detrend_correlation_graph}) we can see $\mathbb{K}^o(l)$ zoomed in between [0,60] seconds.
+\end{enumerate}
+
+\newpage
+\section{Exercise 4}
+
+\begin{enumerate}[1.]
+	\item First, let us define what the PSD function is ...
+		\begin{equation}
+			\mathbb{D}(w) = \frac{\tau}{2\pi}\sum_{l=-\infty}^{\infty}\mathbb{K}(l)e^{-il\tau\omega}
+		\end{equation}
+	\item We also know that ...
+		\begin{equation}
+			\mathbb{D}(w) = \lim_{N\to\infty}\mathbb{E}\{\CMcal{F}_N(\omega)\cdot\CMcal{F}_N(\omega)^{H}\}
+			\label{conj_trans}
+		\end{equation}
+	\item In regards to the values begin real numbers. We know that a complex square matrix that is equal to its own
+		conjugate transpose ($H$), which we can see above (\ref{conj_trans}). Which means we can set them equal to each other.
+		\begin{equation}
+			\frac{\tau}{2\pi}\sum_{l=-\infty}^{\infty}\mathbb{K}(l)e^{-il\tau\omega} = \lim_{N\to\infty}\mathbb{E}\{\CMcal{F}_N(\omega)\cdot\CMcal{F}_N(\omega)^{H}\}
+		\end{equation}
+		We also know that Hermitian matrices are complex extensions of real numbers. Leading to the diagonal entries of our matrix being real.
+	\item In regards to our values always being non-negative values. Within our PSD diagonal entries they represent the power of the signal at some specific frequency.
+		By definition power is non-negative as it is the magnitude squared of the signal. Therefore, our diagonal entries cannot be negative.
+
+
+	
+\end{enumerate}
+
+
+
+
+% close the document
+% this should always come last
+\end{document}
