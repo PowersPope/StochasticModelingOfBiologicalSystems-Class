@@ -1,0 +1,159 @@
+% specify the general document type
+% this should always come first
+\documentclass[letter,12pt]{article}
+
+% load packages for more math symbols
+\usepackage{amsmath, amsthm, amsfonts, amscd, amsxtra, mathrsfs, amssymb, latexsym, stmaryrd, cancel, mathdots, wasysym}
+
+% allow importing graphics
+\usepackage{graphicx}
+
+% specify input language and font encoding
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% improve the way links appear
+\usepackage[bookmarks,bookmarksnumbered,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue]{hyperref}
+
+% modify document margins
+\usepackage{anysize}
+\marginsize{2.5cm}{2.5cm}{1cm}{2cm}
+
+% more sophisticated lists
+\usepackage{enumerate}
+
+\usepackage{eucal}
+
+% matrix formatting
+\usepackage{amsmath}
+
+% - - - - - - - - - - - - - TITLE PAGE - - - - - - - - - - - - %
+
+% title
+\title{\emph{Stochastic dynamical modeling in biology}\\\vspace{1em}- Homework 8 solutions -}
+
+% author
+\author{Andrew Powers}
+
+% disable date display
+\date{}
+
+\begin{document}
+
+\maketitle % generate document title
+\hrule % draw a horizontal line
+
+
+% - - - - - - - - - - - - - START DOCUMENT - - - - - - - - - - - - %
+
+\section{Exercise 1}
+
+In this homework we were tasked with solving the master equation of a homogeneous CTMC for the nucleotide sequence of a neutrally evolving gene.
+We are told to consider the HKY nucleotide substitution model with independent sites, this can be found in the book on section 6.1.3.
+The parameters of the model will be $\mu = 2 \times 10^{-3} yr^{-1}$, $\sigma_A = 0.4, \sigma_C = 0.15, \sigma_G = 0.25, \sigma_T = 0.2,$ and $\kappa = 5$.
+We are going to track a singlue nucleotide as it changes over time. 
+
+\begin{enumerate}
+
+  \item We are supposing that we start with and Adenine (A). We have a state space $S = \{A, C, G, T\}$. We want to determine the probability distribution of the 
+    the four possible states over time, from 0 until 5000 years. Since $S$ is non-numeric, we can enumerate our states. This gives us $S = \{A:1, C:2, G:3, T:4\}$.
+    Doing this allows us to take advantage of computational resources like Matlab. We are starting with A as our initial state, i.e. $X_0 = A$. However, we can write
+    this into a $p(t)$ vector, because $A \rightarrow 1$: 
+
+    \begin{equation}
+      p(0) = \begin{pmatrix}
+       1 \\
+       0 \\
+       0 \\
+       0
+      \end{pmatrix}
+    \end{equation}
+
+    This is our initial probability at time 0. Also, we know from the definition of the problem above that our CTMC is homogeneous. This means that our $\mathbb{Q}$
+    matrix is independent of time. Which allows us to use the master equation:
+
+    \begin{equation}\label{master_equation}
+      p(t) = e^{t\mathbb{Q}}\cdot p(0)
+    \end{equation}
+
+    However, we need to calculate the transition rate matrix, $\mathbb{Q}$. We can get the equation for that by looking at 
+    6.1.3 in the book. Since we are basing our model off of the HKY nucleotide substitution model we can get $\mathbb{Q}$ by ...
+
+    \begin{equation}
+      \mathbb{Q} : = \beta \mu \widetilde{\mathbb{Q}}
+    \end{equation}
+
+    We are given $\mu$ in the problem. However, we can calculate $\beta$ with this formula ...
+
+    \begin{equation}
+      \beta := \frac{1}{2\kappa(\sigma_A\sigma_G + \sigma_C\sigma_T) + 2(\sigma_A + \sigma_G)(\sigma_C + \sigma_T)}
+    \end{equation}
+
+    We can also calculate $\widetilde{\mathbb{Q}}$ by filling in this matrix ...
+
+    \begin{equation}
+      \widetilde{\mathbb{Q}} : = 
+      \begin{pmatrix}
+        * & \sigma_A & \kappa \sigma_A & \sigma_A \\
+        \sigma_C & * & \sigma_C & \kappa \sigma_C \\
+        \kappa \sigma_G & \sigma_G & * & \sigma_G \\
+        \sigma_T & \kappa \sigma_T & \sigma_T & *
+      \end{pmatrix}
+    \end{equation}
+
+    Now that we have everything defined we can use (Eq. $\ref{master_equation}$) to calculate the probabilities of our states
+    as we move forward in time.
+
+    \begin{figure}[h]
+      \includegraphics[width=\linewidth]{~/Downloads/homework8_A.png}
+      \caption{Nucleotide probabilites starting at Adenine as we move 5000 years into the future}
+      \label{A_graph}
+    \end{figure}
+
+    We can see from the figure above (Fig. $\ref{A_graph}$)that as we move forward in time Adenine (A) becomes the most probable nucloetide to 
+    be present after 5000 years. Then Cytosine, Guanine, and finally Tyrosine. It seems that the probability distribution converges 
+    in the long term. The final probabilites are ...
+    
+    \begin{equation}
+      p(5000 yr) = 
+      \begin{pmatrix}
+        0.4007 \\
+        0.1495 \\
+        0.2505 \\
+        0.1993
+      \end{pmatrix}
+    \end{equation}
+
+  \item We were asked to repeat the same process but with a new Cytosine (C) as the starting point this time. This will allow
+    us to determine if we reach the same probability distribution at time T (5000 years) in the future.
+
+    \pagebreak
+    \begin{figure}[h]
+      \includegraphics[width=\linewidth]{~/Downloads/homework8_C.png}
+      \caption{Nucleotide probabilities starting at Cytosine as we move 5000 years into the future}
+      \label{C_graph}
+    \end{figure}
+    
+    Looking at the graph above (Fig. $\ref{C_graph}$) and comparing it with Fig. $\ref{A_graph}$ we can see that again the same pattern is repeated. Adenine, Cytosine,
+    Guanine, and then Tyrosine. However, We can see that at the beginning Cytosine was dominant for the first ~100 years or so.
+    If we look at the probability distribution at 5000 years we see and almost identical probability distribution that we saw above.
+
+    \begin{equation}
+      p(5000 yr) = 
+      \begin{pmatrix}
+        0.3987 \\
+        0.1509 \\
+        0.2492 \\
+        0.2012
+      \end{pmatrix}
+    \end{equation}
+
+    In conclusion it seems that regardless of $X_0$ being A or C we converge to the same probability
+    distribution in the long term.
+
+  
+\end{enumerate}
+
+% - - - - - - - - - - - - - END DOCUMENT - - - - - - - - - - - - %
+\end{document}
